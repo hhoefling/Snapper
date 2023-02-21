@@ -1,5 +1,7 @@
 # Snapper
 Verwalte Schappschüsse der openWB auf der Box selbst. 
+Zu verwenden mit openWB 1.9.xxx (ab ca. 1.9.240)
+(Nicht für die openWB 2.0.x)
 
 Dieses PHP Script und seine Hilfen in form von Bash Scripten
 wird auf dem Raspbery Pi der openWB installiert.
