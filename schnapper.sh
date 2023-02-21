@@ -39,6 +39,8 @@ fi
  echo "Sammel externe Daten in das openWB/sav Verzeichnis."
  [ ! -d $base/openWB/sav ] &&  mkdir $base/openWB/sav
 
+ deb "hole schnapper.txt nach sav"
+ [ -f $base/openWB/ramdisk/schnapper.txt ] && mv $base/openWB/ramdisk/schnapper.txt $base/openWB/sav/schnapper.txt
  deb "cp /var/lib/mosquitto/mosquitto.db $base/openWB/sav/mosquitto.db"
  cp  -v -p /var/lib/mosquitto/mosquitto.db $base/openWB/sav/mosquitto.db
  ls -l $base/openWB/sav/mosquitto.db
