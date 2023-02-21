@@ -31,6 +31,6 @@ SSH Zugang zur openWB ist für die installation erforderlich.
 cd /var/www/html
 git clone https://github.com/hhoefling/Snapper.git snapper
 chmod a+w snapper
-chmod -a+x snapper/*.sh
+chmod a+x snapper/*.sh
 chown -R pi:pi snapper 
 ```
