@@ -34,3 +34,8 @@ chmod a+w snapper
 chmod a+x snapper/*.sh
 chown -R pi:pi snapper 
 ```
+
+Auruf über die Website des Raspberry
+
+![snapper1](https://user-images.githubusercontent.com/89247538/220482416-d45d8707-3b88-49b4-9555-bf2f89fca53e.png)
+
