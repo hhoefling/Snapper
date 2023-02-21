@@ -18,3 +18,16 @@ So gibt es dann eine einfache möglichkeit mal eine andere openWB Software versi
 zur alten Version zuückzukehren. 
 Backup-Restore würde zwar das gleiche realisierten aber deutlich umständlicher zu Handhaben sein.
 
+## Installation ##
+
+### Installatin ohne SSH zugang über eienen PC ###
+Auf einem Linux-Desktop herunterladen. Die openWB-SD Karte entnehmen 
+und im Kartenleser einen anderen Linux Systems direkt beschreiben
+
+### Installatin von Github ###
+SSH Zugang zur openWB ist für die installation erforderlich.
+
+```
+cd /var/www/html
+git clone https://github.com/hhoefling/Snapper.git snapper
+```
