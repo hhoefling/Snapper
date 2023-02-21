@@ -1,5 +1,7 @@
 # Snapper
 Verwalte Schappschüsse der openWB auf der Box selbst. 
+Zu verwenden mit openWB 1.9.xxx (ab ca. 1.9.240)
+(Nicht für die openWB 2.0.x)
 
 Dieses PHP Script und seine Hilfen in form von Bash Scripten
 wird auf dem Raspbery Pi der openWB installiert.
@@ -17,4 +19,26 @@ Auf die überlicherweise verbauten 16GB SD-Karten können also mindestens 10 Sch
 So gibt es dann eine einfache möglichkeit mal eine andere openWB Software version einzuspielen und anschliessend
 zur alten Version zuückzukehren. 
 Backup-Restore würde zwar das gleiche realisierten aber deutlich umständlicher zu Handhaben sein.
+
+## Installation ##
+
+### Installatin ohne SSH zugang über eienen PC ###
+Auf einem Linux-Desktop herunterladen. Die openWB-SD Karte entnehmen 
+und im Kartenleser einen anderen Linux Systems direkt beschreiben
+
+### Installatin von Github ###
+SSH Zugang zur openWB ist für die installation erforderlich.
+
+```
+cd /var/www/html
+git clone https://github.com/hhoefling/Snapper.git snapper
+chmod a+w snapper
+chmod a+x snapper/*.sh
+chown -R pi:pi snapper 
+```
+
+Auruf über die Website des Raspberry
+http://<ip_or_dnsname>/snapper/
+
+![snapper1](https://user-images.githubusercontent.com/89247538/220482416-d45d8707-3b88-49b4-9555-bf2f89fca53e.png)
 
