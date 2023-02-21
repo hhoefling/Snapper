@@ -1,2 +1,20 @@
 # Snapper
 Verwalte Schappschüsse der openWB auf der Box selbst. 
+
+Dieses PHP Script und seine Hilfen in form von Bash Scripten
+wird auf dem Raspbery Pi der openWB installiert.
+Es dient dazu Schnapschüsse des openWB Verzeichnisses zu machen.
+Diese entsprechen einem "Backup" der openWB Software.
+Das zugrundeliegenen Rasperby-OS (oder debian) wird nicht mitgesichert.
+
+Auch können diese Schnappschüsse wieder aktivert werden.
+Das Scipt übernimmt die Aufgabe die openWB Dienst zu stoppen 
+und nach dem zurückkopieren des Schnappschusses das neustarten.
+
+Motiviert wurde das ganze durch die Tatsache das die USB Port und der SD Kartenschacht des Raspi nur nach öffen der Wallbox erreichbat sind.
+Zum anderen belegt die openWB Software deutlich unter 1GB Speicher.
+Auf die überlicherweise verbauten 16GB SD-Karten können also mindestens 10 Schnappschüsse abgelegt werden.
+So gibt es dann eine einfache möglichkeit mal eine andere openWB Software version einzuspielen und anschliessend
+zur alten Version zuückzukehren. 
+Backup-Restore würde zwar das gleiche realisierten aber deutlich umständlicher zu Handhaben sein.
+
