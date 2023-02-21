@@ -1,4 +1,25 @@
 <?php
+/*
+#
+#   File: index.php Mainfile von snapper
+#
+#   Copyright 2023 Heinz Höfling
+#
+#     snapper is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     snapperis distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with openWB.  If not, see <https://www.gnu.org/licenses/>.
+#
+*/
+
  $html="/var/www/html";
  $dbg=[];
  $freemem="";
@@ -31,9 +52,9 @@
  $showlog=0;
  $logend=-1;
 
-debout( "logend:$logend do:$do");
-if( $do == "" || $do == "refresh")
-{
+ debout( "logend:$logend do:$do");
+ if( $do == "" || $do == "refresh")
+ {
   if(file_exists($logfile) )
   {
        $logs=file($logfile); 
@@ -50,9 +71,9 @@ if( $do == "" || $do == "refresh")
           $showlog=1;
         }  
   }
-}
+ }
 
-if( $do == "schnapper" )
+ if( $do == "schnapper" )
  {
    file_put_contents($logfile, "** Erzeuge Schnappschuss **\n");
    
@@ -60,7 +81,7 @@ if( $do == "schnapper" )
    if ( isset($_POST['komm']) && $_POST['komm']>'' )
         $komm =  $_POST['komm'];
 
-   $kommfile=$_SERVER['DOCUMENT_ROOT'] . "/openWB/schnapper.txt";
+   $kommfile=$_SERVER['DOCUMENT_ROOT'] . "/openWB/ramdisk/schnapper.txt";
    file_put_contents($kommfile,$komm); 
    $command = "sudo /bin/bash -c \"$pwd/schnapper.sh $debug >>$logfile 2>&1 & \" ";
    shell_exec($command);   
@@ -68,7 +89,7 @@ if( $do == "schnapper" )
    header('Location: '."");
 
  }
-elseif( $do == "aktivate" )
+ elseif( $do == "aktivate" )
  {
    $name="";
    if ( isset($_POST['name']) && $_POST['name']>'' )
@@ -78,7 +99,7 @@ elseif( $do == "aktivate" )
    shell_exec($command);   
    header('Location: '."");
  }
-elseif( $do == "delete" )
+ elseif( $do == "delete" )
  {
    $name="";
    if ( isset($_POST['name']) && $_POST['name']>'' )
@@ -88,7 +109,7 @@ elseif( $do == "delete" )
    shell_exec($command);   
    header('Location: '."");
  }
-elseif( $do == "refresh" )
+ elseif( $do == "refresh" )
  { // nix tun, auch kein fressh starten
    if( $logend == 1)
     {
@@ -98,24 +119,21 @@ elseif( $do == "refresh" )
     }    
    header('Location: '."");
  }
-elseif( $do == "init" )
+ elseif( $do == "init" )
  { // nix tun, auch kein fressh starten
     $command = "sudo /bin/bash -c \"rm $logfile \" ";
     shell_exec($command);
     header('Location: '."");
  }
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<base href="/switchwb/">
+		<base href="/snapper/">
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>SwitchWB</title>
+		<title>Snapper</title>
         <link rel="icon" type="image/png" href="./favicon.ico"/>
 		<meta name="description" content="verwaltet openWB Versionen" />
 		<meta name="keywords" content="html openWB" />
@@ -228,8 +246,8 @@ details[open] {
        )
       {
         $schnapper="";     
-        if( file_exists($html."/".$value."/schnapper.txt") )
-           $schnapper=file_get_contents($html."/".$value."/schnapper.txt"); 
+        if( file_exists($html."/".$value."/sav/schnapper.txt") )
+           $schnapper=file_get_contents($html."/".$value."/sav/schnapper.txt"); 
         $vers=file_get_contents($html."/".$value."/web/version"); 
         $r= new StdClass;
         $r->name = $value;
