@@ -1,6 +1,11 @@
-
-/fuel/vendor
-
-# the fuelphp document
-/docs/
-
+*.csv
+*.log
+*.pyc
+*.bak
+*.sav
+*.list
+openwb.conf.*
+*.tar.gz
+ramdisk/
+.DS_Store
+.ftp*
