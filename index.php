@@ -225,7 +225,7 @@ th, caption {
 button {
     border-radius: 3px;
     border: 1px solid #0000B2;
-    padding:2px 12px 2px 12px;
+    padding:3px 10px 3px 10px;
     background: #F7F7F7;
     font-size: 0.9em;
     cursor: pointer;
@@ -242,7 +242,7 @@ table, th, td {
 }
 
  th, td {
-  padding: 15px;
+  padding: 5px;
 }
 
 input:invalid { background: hsl(5,30%,80%) }
@@ -353,7 +353,7 @@ details[open] {
              echo "<body style=\"font-family:Verdana;color:#102030;\" >";
  ?>
         <div class="band">
-          <h1> OpenWB Schnappschuss Verwaltung</h1>
+          <h1 style="margin: 5px;"> OpenWB Schnappschuss Verwaltung</h1>
         </div>
         <div style="overflow:auto">
          <div class="table" >
@@ -372,7 +372,7 @@ details[open] {
               {
                 $dates=scann($html);
                 foreach ($dates as $k => $d)
-                  printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s&nbsp;%s&nbsp;%s</td></tr>\n",   
+                  printf("<tr><td>%s</td><td>%s</td><td>%s</td><td style='text-align: center;'>%s&nbsp;%s&nbsp;%s</td></tr>\n",   
                    $d->size, $d->name, $d->version, $d->but,$d->but2,$d->but3);
              } 
              $freemem=getfreemem();
@@ -386,7 +386,7 @@ details[open] {
             if( $freemem < 500 )
             {
                 echo "<div class=\"warnband\" style=\"margin-top:2px;\">";
-                echo "!!!ACUTUNG !!! Weniger als 500MB freier Platz auf dem Speichermedium";
+                echo "!!!ACHTUNG !!! Weniger als 500MB freier Platz auf dem Speichermedium";
             } else
             {
                 echo "<div class=\"band\" style=\"margin-top:2px;\">";
@@ -421,7 +421,7 @@ details[open] {
           <!-- form name="f4" action="switcher.php?schnapper=1" method="post" autocomplete="off" -->
           
           <form action="" method="post" onsubmit="return confirm('Einen neuen Schnappschuss anlegen?');" autocomplete="off">
-           <h5> Hier können einen weitern Schnappschuss der aktuellen Version anlegen (Master)</h5>
+           <h4> Hier kann ein weiterer Schnappschuss der aktuellen Version anlegt werden. </h4>
            <p>
             <input type="hidden" name="do" value="schnapper">
             <textarea id="komm" name="komm" rows="4" cols="50"></textarea>
