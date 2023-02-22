@@ -26,7 +26,7 @@ function deb()
 }
 
 deb  "$SELF starting $*" 
-deb "debug:$debug"
+  Error "Verzeichnis $base/$newdir existiert schon."
 deb "mode:$mode"
 deb "newdir:$newdir"
 

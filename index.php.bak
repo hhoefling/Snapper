@@ -326,7 +326,7 @@ details[open] {
                                   "<input type=\"hidden\" name=\"do\" value=\"activat\">" ); 
             $r->but2=makebutton('name',$value,' löschen ',
                                    "Löschen ?\\Diesen Schnappschuss entgültig entfernen.", 
-                                   "<input type=\"hidden\" name=\"do\" value=\"delete\">" ); 
+                    ."<input type=\"hidden\" name=\"do\" value=\"delete\">"
             $r->but3=makebutton('name',$value,' speichern ',
                                     "Diesen Schnapschuss erneut speichern.\\nEr wird mit der aktiven Version überschreiben.", 
                                     "<input type=\"hidden\" name=\"do\" value=\"override\">" ); 
@@ -374,7 +374,7 @@ details[open] {
                 foreach ($dates as $k => $d)
                   printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s&nbsp;%s&nbsp;%s</td></tr>\n",   
                    $d->size, $d->name, $d->version, $d->but,$d->but2,$d->but3);
-             } 
+                    ."<button  name=\"name\" value=\"init\" >Clear & Init</button></form>" );
              $freemem=getfreemem();
              $freegb=$freemem / 1024;
                    

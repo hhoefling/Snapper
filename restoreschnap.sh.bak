@@ -5,7 +5,6 @@ base=/var/www/html
 
 dn=${1:-"None"}
 fromdir="${base}/$dn"
-todir="${base}/openWB"
 debug=${2:-0}
 
 
@@ -36,14 +35,12 @@ if [ ! -d $fromdir ] ; then
 fi
 
 meld "Schnappschuss $fromdir wiederherstellen." 
-meld "Quelle: $fromdir"
-meld "Ziel  : $todir"
-sleep 1 
-
 cd $base
 
+meld "Stoppe openWB." 
+cd $base/openWB
 
-meld "Check for pipe-Error in Scripten."
+meld "check for pipe-Error"
 deb "Suche in $fromdir/runs/ "
 if grep -q -r -e  "sudo.*python3.*OPENWBBASEDIR/runs/rfid/readrfid.py.*-d event0\s*&" $fromdir/runs/* ; then
   echo "********************** need patch *********************"
@@ -58,47 +55,36 @@ if grep -q -r -e  "sudo python3.*OPENWBBASEDIR/runs/rfid/readrfid.py.*-d event1\
    Error "Abbruch. Bitte erst korrigieren. atreboot.sh bleibt sonst hängen"
 fi 
  
-meld "----------------------" 
-meld "Stoppe laufende openWB." 
-meld "----------------------" 
-cd $todir
 
-lademodus=$(<$todir/ramdisk/lademodus)
+
+lademodus=$(</var/www/html/openWB/ramdisk/lademodus)
 if (( lademodus != 3 )) ; then
   meld "Stoppe aktive Ladung."
   mosquitto_pub -t openWB/set/ChargeMode -r -m "3"
   sleep 15
 fi  
-lademodus=$(<$todir/ramdisk/lademodus)
+lademodus=$(</var/www/html/openWB/ramdisk/lademodus)
 if (( lademodus != 3 )) ; then
   meld "Stoppe aktive Ladung. (2 Versuch)"
   mosquitto_pub -t openWB/set/ChargeMode -r -m "3"
   sleep 15
 fi  
 
-meld "Stoppe die Regelschleife.."
-echo 1 > $todir/ramdisk/updateinprogress
-echo 1 > $todir/ramdisk/bootinprogress
+meld "Stoppe openWB Regelschleife.."
+echo 1 > /var/www/html/openWB/ramdisk/updateinprogress
+echo 1 > /var/www/html/openWB/ramdisk/bootinprogress
 mosquitto_pub -t openWB/system/updateInProgress -r -m "1"
-echo "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist" > $todir/ramdisk/lastregelungaktiv
+echo "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist" > /var/www/html/openWB/ramdisk/lastregelungaktiv
 mosquitto_pub -t "openWB/global/strLastmanagementActive" -r -m "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist"
-
-meld "Rename regel.sh damit keine weiteren mehr gestart werden."
-[ -f $todir/regel.sh ] && mv -f $todir/regel.sh $todir/regel.no 
-meld "Regelschleife gestoppt"
-sleep 1
-
-meld "Stoppe eventuell laufende cron5 und cronnighly jobs.."
 sudo pkill 'cronnighly.sh' >/dev/null
-if [ -f "$todir/ramdisk/cronnighlyruns" ] ; then
-  sudo rm -f "$todir/ramdisk/cronnighlyruns"
-  meld "cronnighly killed."
+if [ -f "/var/www/html/openWB/ramdisk/cronnighlyruns" ] ; then
+  sudo rm -f "/var/www/html/openWB/ramdisk/cronnighlyruns"
 fi
 sudo pkill 'cron5mins.sh' >/dev/null
-if [ -f "$todir/ramdisk/cron5runs" ]  ; then
-  sudo rm -f "$todir/ramdisk/cron5runs"
-  meld "cron5mins killed."
+if [ -f "/var/www/html/openWB/ramdisk/cron5runs" ]  ; then
+  sudo rm -f "/var/www/html/openWB/ramdisk/cron5runs"
 fi
+meld "Regelschleife gestoppt"
 sleep 1
 
 
@@ -114,9 +100,8 @@ deb "stoppe chromium"
 sudo pkill  -f '/usr/lib/chromium-browser/' > /dev/null
 sleep 1
 
-meld "alle anderen openWB-Dienste nun auch anhalten.." 
-
-cd $todir
+meld "Aktelle openWB Server/Dienste anhalten.." 
+cd $base/openWB
 meld "---aktuell aktive Dienste ---"
 sudo ps -efl | grep -E "openWB|runs|tsp|mosquitto" | grep -v grep | grep -v sudo | grep -v restoreschnap 
 meld "---aktuell aktive Dienste ---"
@@ -128,7 +113,7 @@ if [ -f  runs/service.sh ] ; then
    meld "Stoppe. LSR, modbus, mqtt_sub, isss, rse, rfid, Smarthome, tsp, sysdaem mit runs/services.sh"
    meld "sudo -u pi runs/services.sh stop all"
 else
-  meld "Stoppe. LSR, modbus, mqtt_sub, isss, buchse, rse, rfid, Smarthome jeweils einzeln"
+  meld "Stoppe. LSR, modbus, mqtt_sub, isss, buchse, rse, rfid, Smarthome einzeln"
   sudo pkill -f '^python.*/modbusserver.py' > /dev/null
   sudo pkill -f '^python.*/smarthomehandler.py' >/dev/null
   sudo pkill -f '^python.*/smarthomemq.py' >/dev/null
@@ -145,31 +130,20 @@ else
   sudo pkill -f 'runs/rfid/rfidHelper.sh' > /dev/null
   sudo pkill -f 'runs/rse/rseHelper.sh' > /dev/null
   sudo pkill -f '^python.*/rseDaemon.py' > /dev/null
-  sudo pkill -f '^python.*/rse.py' > /dev/null
+fisudo pkill -f '^python.*/rse.py' > /dev/null
 fi    
 
 sudo pkill -f '^python.*/puller.py' > /dev/null
 
 sleep 1
-meld "---noch immer aktive Dienste (sollte nun leer sein bis auf regel.sh) ---"
+meld "---noch immer aktive Dienste ---"
 sudo ps -efl | grep -E "openWB|runs|tsp|mosquitto" | grep -v grep | grep -v sudo | grep -v restoreschnap
 meld "---noch immer aktive Dienste ---"
 sleep 1
 
-meld "-------------------"
-meld "openWB ist gestopt"
-meld "-------------------"
-meld "Copy $fromdir zu $todir"
-
-# sicherstellen das die regelschleife nicht sofort wieder losläuft
-# wenn regle.sh  zum ziel kopiert wurde in cron gerade zuschlägt 
-[ -f $fromdir/regel.sh ] && mv -f $fromdir/regel.sh $fromdir/regel.no 
 
 deb "cp -rp openWB_$date openWB"
 # cp -rp openWB_$date openWB
-
-meld "Copy done ---------"
-meld "-------------------"
 
 
 meld "Starte Display neu (macht atreboot.sh nicht)"
@@ -179,21 +153,10 @@ meld "Starte Mosquitto neu"
 service mosquitto start 
 sleep 1
 
-if [ ! -f $todir/regel.sh ] ; then
-   meld "Restore regels.sh from regel.no"
-   mv -f $todir/regel.no $todir/regel.sh
-fi
- 
-
 meld "Trigger neustart in openWB um die Dienste wieder zu starten."
-meld "-------------------"
-cd $todir
+cd $base/openWB
 sudo -u pi /bin/bash -c "runs/atreboot.sh 2>&1 " | tee  -a /var/log/openWB.log 
-meld "-------------------"
-meld "---wieder aktive Dienste ---"
-sudo ps -efl | grep -E "openWB|runs|tsp" | grep -v grep | grep -v sudo | grep -v restoreschnap
-meld "---wieder aktive Dienste ---"
-sleep 1
+
 meld "Fertig."
 meld "::END::"
 
