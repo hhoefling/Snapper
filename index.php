@@ -242,7 +242,7 @@ table, th, td {
 }
 
  th, td {
-  padding: 5px;
+  padding: 8px;
 }
 
 input:invalid { background: hsl(5,30%,80%) }
@@ -294,6 +294,14 @@ details[open] {
    $output = shell_exec($command);
    return $output;
   
+ }
+ function getsystem()
+ {
+   global $debug;
+   $pwd= dirname($_SERVER['SCRIPT_FILENAME']); //  /var/www/html/switchwb/switcher.php
+   $command = escapeshellcmd("sudo /bin/bash $pwd/getsys.sh $debug 2>&1");
+   $output = shell_exec($command);
+   return $output;
  }
 
  function scann($html)
@@ -351,9 +359,11 @@ details[open] {
               echo "<body style=\"font-family:Verdana;color:#102030;\" class=\"wait\">";
          else
              echo "<body style=\"font-family:Verdana;color:#102030;\" >";
+        $sys=getsystem();
  ?>
         <div class="band">
           <h1 style="margin: 5px;"> OpenWB Schnappschuss Verwaltung</h1>
+          <?php echo $sys; ?>
         </div>
         <div style="overflow:auto">
          <div class="table" >
