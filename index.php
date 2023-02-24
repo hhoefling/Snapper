@@ -303,6 +303,14 @@ details[open] {
    $output = shell_exec($command);
    return $output;
  }
+ function getvers($dir)
+ {
+   global $debug;
+   $pwd= dirname($_SERVER['SCRIPT_FILENAME']); //  /var/www/html/switchwb/switcher.php
+   $command = escapeshellcmd("sudo /bin/bash $pwd/getvers.sh $dir $debug 2>&1");
+   $output = shell_exec($command);
+   return $output;
+ }
 
  function scann($html)
  {
@@ -318,7 +326,7 @@ details[open] {
         $schnapper="";     
         if( file_exists($html."/".$value."/sav/schnapper.txt") )
            $schnapper=file_get_contents($html."/".$value."/sav/schnapper.txt"); 
-        $vers=file_get_contents($html."/".$value."/web/version"); 
+        $vers=getvers($value);  // file_get_contents($html."/".$value."/web/version"); 
         $r= new StdClass;
         $r->name = $value;
         $r->version=$vers;
@@ -371,7 +379,7 @@ details[open] {
           <table style="width:100%;">
             <tr>
               <th>Größe</th>
-              <th style="width:35%;">Verzeichnis</th>
+              <th style="width:30%;">Verzeichnis</th>
               <th>Version</th>
               <th style="width:30%;">Aktion</th>
             </tr>
