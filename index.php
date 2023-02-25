@@ -266,7 +266,7 @@ details[open] {
 
 <?php
 
- if( $debug>3) 
+ if( $debug>6) 
   { echo "<pre>"; 
    debout( print_r($GLOBALS,true));
    debout( print_r($_SERVER,true));
