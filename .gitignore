@@ -4,6 +4,7 @@
 *.bak
 *.sav
 *.list
+excludes
 openwb.conf.*
 *.tar.gz
 ramdisk/
