@@ -2,6 +2,8 @@
 
 dir=${1:-}
 vers=$(</var/www/html/$dir/web/version); 
+devicename=$(grep "devicename=" /var/www/html/$dir/openwb.conf | cut -f 2 -d "=")
+
 branch=$(grep "branch" /var/www/html/$dir/.git/config | cut -f 2 -d " ")
 branch=${branch/\"/}
 branch=${branch/\"/}
@@ -15,4 +17,4 @@ urlx=$(dirname $urlx)
 urly=$(basename $url)
 urly=${urly/.git/}
 
-echo "${vers}<br><small>Git:<b>${urlx}</b><br>Git-User:<b>$urlx2</b><br>Repro:<b>${urly}</b> Branch:<b>$branch</b></small>"
+echo "${vers}&nbsp;<b>$devicename</b><br><small>Git:<b>${urlx}</b><br>Git-User:<b>$urlx2</b><br>Repro:<b>${urly}</b> Branch:<b>$branch</b></small>"
