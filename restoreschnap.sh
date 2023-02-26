@@ -78,7 +78,9 @@ function StopRegelSh()
 {
  meld "Stoppe die Regelschleife.."
  echo 1 > $todir/ramdisk/updateinprogress
+ chown pi:pi $todir/ramdisk/updateinprogress
  echo 1 > $todir/ramdisk/bootinprogress
+ chown pi:pi $todir/ramdisk/bootinprogress
  mosquitto_pub -t openWB/system/updateInProgress -r -m "1"
  echo "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist" > $todir/ramdisk/lastregelungaktiv
  mosquitto_pub -t "openWB/global/strLastmanagementActive" -r -m "Update im Gange, bitte warten bis die Meldung nicht mehr sichtbar ist"
@@ -128,10 +130,13 @@ function StopMosquitto()
 
 function StartMosquitto()
 {
- if [ -f $todir/openWB/sav/mosquitto.db ] ; then
-    meld "Restore gespeicherte mosquitto.edb"
-    deb "cp  $todir/openWB/sav/mosquitto.db /var/lib/mosquitto/mosquitto.db"
-    deb "cp  -v -p $todir/openWB/sav/mosquitto.db /var/lib/mosquitto/mosquitto.db"
+ if [ -f $todir/sav/mosquitto.db ] ; then
+    service mosquitto stop 
+    ls -l /var/lib/mosquitto/m*
+    meld "Restore gespeicherte mosquitto.db"
+    deb "sudo mv -v -f $todir/sav/mosquitto.db /var/lib/mosquitto/mosquitto.db"
+    sudo mv -v -f $todir/sav/mosquitto.db /var/lib/mosquitto/mosquitto.db
+    ls -l /var/lib/mosquitto/m*
  fi
  meld "Starte Mosquitto neu"
  service mosquitto start 
@@ -223,11 +228,11 @@ function RestoreSchnappshut()
  echo "regel.no"
  echo "regel.sh"
  echo "*.gz"
- echo "ramdisk/*"
+  (( restore_ramdisk != 1 ))  && echo "ramdisk/*"
  ) >$SCRIPT_DIR/excludes
 
  meld "Exclude-----"
- more $SCRIPT_DIR/excludes
+ cat  $SCRIPT_DIR/excludes
  meld "Exclude-----"
 
  meld "Restore schnappschussdaten mit tar"
