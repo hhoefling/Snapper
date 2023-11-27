@@ -241,7 +241,7 @@ function RestoreSchnappshut()
   tar -X $SCRIPT_DIR/excludes \
   --checkpoint=512 \
   --checkpoint-action=echo="%s %T" \
-  -cf - . | tar -xf - -C $todir/.
+  -cf - . | tar -xpf - -C $todir/.
  )
  meld "Restore regel.sh"
  cp -p $fromdir/regel.* $todir/.
