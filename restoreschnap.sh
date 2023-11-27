@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# vers 1.0
+
 SELF=$(basename $0)
 
 dn=${1:-"None"}
