@@ -1,4 +1,5 @@
 #!/bin/bash
+# Vers 1.0
 
 SELF=$(basename $0)
 
